@@ -1,0 +1,33 @@
+## Interface: 11509, 16001
+## Title: Warcraft Simulator
+## Notes: A Warcraft III-style real-time strategy game played with WoW models: the Human Alliance, the Orcish Horde, the Undead Scourge and the Night Elf Sentinels, with the real WC3 units, buildings, tiers and upgrades. /warsim or /skirmish to play.
+## Author: Chad Caswell
+## Version: 0.17.0
+## SavedVariables: SkirmishDB
+
+Engine\Data.lua
+Engine\Sizes.lua
+Engine\Map.lua
+Engine\WC3Maps.lua
+Engine\Sim.lua
+Engine\Tech.lua
+Engine\Heroes.lua
+Engine\Spells.lua
+Engine\Neutral.lua
+Engine\Tavern.lua
+Engine\Rules.lua
+Engine\Undead.lua
+Engine\NightElf.lua
+Engine\AI.lua
+UI\Core.lua
+UI\Net.lua
+UI\Figures.lua
+UI\Draw.lua
+UI\Fx.lua
+UI\Sound.lua
+UI\Mini.lua
+UI\Input.lua
+UI\Hud.lua
+UI\Studio.lua
+UI\MinimapButton.lua
+Commands.lua
