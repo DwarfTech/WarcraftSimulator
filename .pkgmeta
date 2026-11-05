@@ -1,5 +1,8 @@
 package-as: WarcraftSimulator
 
 ignore:
-  - README.md
+  - tests
   - .github
+  - .gitignore
+  - .pkgmeta
+  - README.md

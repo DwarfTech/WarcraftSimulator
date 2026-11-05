@@ -1,22 +1,43 @@
-# Packages the addon and uploads it to CurseForge whenever a GitHub release is published
-# (Releases > Draft a new release > tag v1.2.3 > Publish). Needs the repository secret CF_API_KEY (a CurseForge API
-# token) and "## X-Curse-Project-ID: <number>" in WarcraftSimulator.toc.
-name: Release to CurseForge
+name: Release
 
+# When the version in WarcraftSimulator.toc changes on main, tag it v<version> and start the
+# Package workflow on that tag. (Tags pushed by a workflow don't start other workflows by
+# themselves, so Package is started directly.) Pushing a v* tag by hand also runs Package.
 on:
-  release:
-    types: [published]
+  push:
+    branches: [main]
+    paths: [WarcraftSimulator.toc]
+  workflow_dispatch:
 
 jobs:
-  release:
+  tag:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      actions: write
     env:
-      CF_API_KEY: ${{ secrets.CF_API_KEY }}
-      GITHUB_OAUTH: ${{ secrets.GITHUB_TOKEN }}
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - uses: BigWigsMods/packager@v2
-        with:
-          args: -n "{package-name}-{project-version}"
+      - name: Read the version
+        id: version
+        run: |
+          v=$(sed -n 's/^## Version: *//p' WarcraftSimulator.toc | tr -d '\r')
+          echo "tag=v$v" >> "$GITHUB_OUTPUT"
+          if git ls-remote --exit-code --tags origin "refs/tags/v$v" >/dev/null; then
+            echo "exists=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "exists=false" >> "$GITHUB_OUTPUT"
+          fi
+      - name: Tag it
+        if: steps.version.outputs.exists == 'false'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git tag -a "${{ steps.version.outputs.tag }}" -m "Warcraft Simulator ${{ steps.version.outputs.tag }}"
+          git push origin "${{ steps.version.outputs.tag }}"
+      - name: Package the tag
+        if: steps.version.outputs.exists == 'false'
+        run: gh workflow run package.yml --ref "${{ steps.version.outputs.tag }}"

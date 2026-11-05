@@ -21,4 +21,7 @@ A Warcraft III real-time strategy game that runs inside World of Warcraft (Class
 
 ## Releasing
 
-Tag a version (`git tag v0.17.0 && git push --tags`). The `.pkgmeta` packages the `WarcraftSimulator` folder for CurseForge.
+Raise `## Version:` in `WarcraftSimulator.toc` and push to `main`. The Release workflow tags the
+commit `v<version>`, and the Package workflow builds the zip, makes a GitHub release and uploads it
+to CurseForge (project `X-Curse-Project-ID` in the `.toc`, token in the `CF_API_KEY` secret).
+The Tests workflow checks every push.

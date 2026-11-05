@@ -1,0 +1,25 @@
+name: Package
+
+# Builds WarcraftSimulator.zip for a v* tag, publishes it as a GitHub release, and uploads it to
+# CurseForge (the project in WarcraftSimulator.toc's X-Curse-Project-ID). Needs the repository
+# secret CF_API_KEY (a CurseForge API token); without it only the GitHub release is made.
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Package and publish
+        uses: BigWigsMods/packager@v2
+        env:
+          CF_API_KEY: ${{ secrets.CF_API_KEY || secrets.CF_API_TOKEN }}
+          GITHUB_OAUTH: ${{ secrets.GITHUB_TOKEN }}

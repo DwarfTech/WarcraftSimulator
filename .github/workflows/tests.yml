@@ -1,0 +1,19 @@
+name: Tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Lua 5.1
+        run: sudo apt-get update && sudo apt-get install -y lua5.1
+      - name: Check every file loads
+        run: for f in Commands.lua Engine/*.lua UI/*.lua; do lua5.1 -e "assert(loadfile('$f'))"; done
+      - name: Two linked games stay in sync (multiplayer)
+        working-directory: tests
+        run: lua5.1 mp_sync.lua .. 1 orcs nightelf 4 && lua5.1 mp_sync.lua .. 2 alliance undead 4
