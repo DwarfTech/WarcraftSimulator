@@ -1,12 +1,9 @@
-# Packages the addon and uploads it to CurseForge whenever a version tag (v1.2.3) is pushed
-# or a GitHub release is published. Needs the repository secret CF_API_KEY (a CurseForge API
+# Packages the addon and uploads it to CurseForge whenever a GitHub release is published
+# (Releases > Draft a new release > tag v1.2.3 > Publish). Needs the repository secret CF_API_KEY (a CurseForge API
 # token) and "## X-Curse-Project-ID: <number>" in WarcraftSimulator.toc.
 name: Release to CurseForge
 
 on:
-  push:
-    tags:
-      - "v*"
   release:
     types: [published]
 
