@@ -1,0 +1,21 @@
+# Packages the addon and uploads it to CurseForge whenever a version tag (v1.2.3) is pushed
+# or a GitHub release is published. Needs the repository secret CF_API_KEY (a CurseForge API
+# token) and "## X-Curse-Project-ID: <number>" in WarcraftSimulator.toc.
+name: Release to CurseForge
+
+on:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    env:
+      CF_API_KEY: ${{ secrets.CF_API_KEY }}
+      GITHUB_OAUTH: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: BigWigsMods/packager@v2
