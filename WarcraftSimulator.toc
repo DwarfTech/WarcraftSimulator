@@ -4,6 +4,7 @@
 ## Author: Chad Caswell
 ## Version: 0.17.0
 ## SavedVariables: SkirmishDB
+## X-Curse-Project-ID: 1784622
 
 Engine\Data.lua
 Engine\Sizes.lua
